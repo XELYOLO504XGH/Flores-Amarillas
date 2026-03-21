@@ -1,6 +1,5 @@
 
- 
-   <!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -52,7 +51,6 @@
             z-index: 1;
         }
 
-        /* MENSAJE INICIAL Y FINAL */
         #initial-text {
             position: absolute;
             top: calc(50% - 160px);
@@ -65,8 +63,7 @@
 
         #main-message {
             position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
+            top: 40%;
             width: 90%;
             text-align: center;
             color: #ffd700;
@@ -79,7 +76,6 @@
             pointer-events: none;
         }
 
-        /* FLOR GIGANTE (BOTÓN) */
         #big-flower-container {
             position: absolute;
             top: 50%;
@@ -121,6 +117,7 @@
             height: 100%;
             bottom: 0;
             z-index: 5;
+            pointer-events: none;
         }
 
         .hide { display: none !important; }
@@ -148,13 +145,13 @@
 
     <script>
         // Estrellas
-        for (let i = 0; i < 70; i++) {
+        for (let i = 0; i < 75; i++) {
             const star = document.createElement('div');
             star.className = 'star';
             const s = Math.random() * 2 + 1;
             star.style.width = s + 'px'; star.style.height = s + 'px';
             star.style.left = Math.random() * 100 + '%';
-            star.style.top = Math.random() * 80 + '%';
+            star.style.top = Math.random() * 75 + '%';
             document.body.appendChild(star);
         }
 
@@ -173,24 +170,22 @@
             ctx.save();
             ctx.translate(x, y);
             ctx.fillStyle = '#ffd700';
-            // Pétalos definidos (forma de tulipán/flor real)
+            // Pétalos definidos
             for (let i = 0; i < 5; i++) {
                 ctx.beginPath();
-                ctx.ellipse(0, -6, 4, 10, 0, 0, Math.PI * 2);
+                ctx.ellipse(0, -5, 3.5, 9, 0, 0, Math.PI * 2);
                 ctx.fill();
                 ctx.rotate((Math.PI * 2) / 5);
             }
-            // Centro
+            // Centro de la flor
             ctx.fillStyle = '#4d2a00';
-            ctx.beginPath(); ctx.arc(0, 0, 3, 0, Math.PI * 2); ctx.fill();
+            ctx.beginPath(); ctx.arc(0, 0, 2.5, 0, Math.PI * 2); ctx.fill();
             ctx.restore();
         }
 
-        function drawBranch(x, y, len, angle, width, currentStep, totalSteps) {
-            if (currentStep > totalSteps) return;
-
-            ctx.save();
+        function drawTree(x, y, len, angle, width) {
             ctx.beginPath();
+            ctx.save();
             ctx.strokeStyle = '#4d2a00';
             ctx.lineWidth = width;
             ctx.translate(x, y);
@@ -205,11 +200,12 @@
                 return;
             }
 
-            // El crecimiento se controla por pasos para la animación
-            setTimeout(() => {
-                drawBranch(0, -len, len * 0.8, angle - 20, width * 0.7, currentStep + 1, totalSteps);
-                drawBranch(0, -len, len * 0.8, angle + 20, width * 0.7, currentStep + 1, totalSteps);
-            }, 100);
+            // Animación controlada por requestAnimationFrame para suavidad
+            requestAnimationFrame(() => {
+                drawTree(0, -len, len * 0.8, angle - 22, width * 0.7);
+                drawTree(0, -len, len * 0.8, angle + 22, width * 0.7);
+            });
+
             ctx.restore();
         }
 
@@ -217,14 +213,17 @@
             this.classList.add('hide');
             document.getElementById('initial-text').classList.add('hide');
             
-            // Inicia crecimiento
-            drawBranch(canvas.width / 2, canvas.height, 70, 0, 10, 0, 8);
+            // Inicia el dibujo del árbol animado
+            drawTree(canvas.width / 2, canvas.height, 80, 0, 12);
 
-            // Aparece mensaje final
+            // Muestra el mensaje después de que crezca un poco
             setTimeout(() => {
                 document.getElementById('main-message').classList.add('show-msg');
-            }, 3000);
+            }, 2500);
         });
     </script>
 </body>
 </html>
+
+   
+            
