@@ -1,25 +1,27 @@
 
-<!DOCTYPE html>
+ 
+   <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Para Nat <3</title>
     <style>
-        /* 1. FONDO Y ESCENA GENERAL */
+        /* 1. FONDO Y ESCENA PRO (Se mantienen) */
         body, html {
             margin: 0;
             padding: 0;
             width: 100%;
             height: 100%;
             overflow: hidden;
-            background: #0b001a;
+            background: #0b001a; /* Tu morado pro */
+            font-family: 'Verdana', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-family: 'Verdana', sans-serif;
         }
 
+        /* 2. ESTRELLAS Y LUNA */
         .background {
             position: absolute;
             width: 100%;
@@ -28,7 +30,6 @@
             z-index: 0;
         }
 
-        /* 2. ESTRELLAS Y LUNA */
         .star {
             position: absolute;
             background: white;
@@ -53,78 +54,29 @@
             z-index: 1;
         }
 
-        /* 3. TEXTOS CON BRILLO */
-        #initial-text {
-            position: absolute;
-            top: calc(50% - 160px);
-            color: #ffd700;
-            font-size: 1.2rem;
-            font-weight: bold;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
-            z-index: 10;
-            transition: opacity 1s;
-        }
-
+        /* 3. TEXTO CENTRADO Y CON BRILLO */
         #main-message {
             position: absolute;
-            top: 150px;
+            top: 50%; /* CENTRADO VERTICAL */
+            transform: translateY(-50%);
             width: 90%;
             text-align: center;
             color: #ffd700;
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             font-style: italic;
             z-index: 10;
             opacity: 0;
-            text-shadow: 0 0 15px #ffd700, 0 0 30px #ffcc00;
-            transition: opacity 2s, transform 2s;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 1), 0 0 30px rgba(255, 215, 0, 0.6);
+            transition: opacity 3s, transform 3s;
             pointer-events: none;
         }
 
         .show-main-message {
             opacity: 1 !important;
-            transform: translateY(-20px);
+            transform: translateY(-50%) translateY(-20px) !important;
         }
 
-        /* 4. FLOR GRANDE (EL BOTÓN) */
-        #big-flower-container {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 150px;
-            height: 150px;
-            z-index: 15;
-            cursor: pointer;
-            transition: all 0.5s ease;
-        }
-
-        .big-petal {
-            position: absolute;
-            background: #ffd700;
-            width: 50px;
-            height: 80px;
-            border-radius: 50%;
-            left: 50%;
-            top: 50%;
-            transform-origin: center bottom;
-            box-shadow: 0 0 20px #ffd700;
-            border: 1px solid rgba(255,255,255,0.3);
-        }
-
-        .big-center {
-            position: absolute;
-            width: 30px;
-            height: 30px;
-            background: #634000;
-            border-radius: 50%;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 2;
-            box-shadow: 0 0 10px rgba(0,0,0,0.5);
-        }
-
-        /* 5. CONTENEDOR DEL JARDÍN/ÁRBOL */
+        /* 4. CONTENEDOR DEL ÁRBOL ANIMADO */
         #garden {
             position: absolute;
             width: 100%;
@@ -132,13 +84,17 @@
             bottom: 0;
             left: 0;
             z-index: 5;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
             pointer-events: none;
         }
 
-        .hide-element {
-            opacity: 0 !important;
-            pointer-events: none !important;
+        /* Lienzo invisible sobre el que JavaScript dibuja */
+        canvas {
+            display: block;
         }
+
     </style>
 </head>
 <body>
@@ -146,23 +102,14 @@
     <div class="background"></div>
     <div class="moon"></div>
     
-    <div id="initial-text">espero que te guste</div>
     <div id="main-message">Para la niña más linda, para Nat <3</div>
     
-    <div id="big-flower-container">
-        <div class="big-petal" style="transform: translate(-50%, -100%) rotate(0deg);"></div>
-        <div class="big-petal" style="transform: translate(-50%, -100%) rotate(72deg);"></div>
-        <div class="big-petal" style="transform: translate(-50%, -100%) rotate(144deg);"></div>
-        <div class="big-petal" style="transform: translate(-50%, -100%) rotate(216deg);"></div>
-        <div class="big-petal" style="transform: translate(-50%, -100%) rotate(288deg);"></div>
-        <div class="big-center"></div>
-    </div>
-
     <div id="garden"></div>
 
     <script>
-        // --- 1. Generar Estrellas ---
-        for (let i = 0; i < 80; i++) {
+        // --- 1. Generar Estrellas Pro ---
+        const starsContainer = document.querySelector('body');
+        for (let i = 0; i < 70; i++) {
             const star = document.createElement('div');
             star.className = 'star';
             const size = Math.random() * 2 + 1;
@@ -170,77 +117,110 @@
             star.style.height = size + 'px';
             star.style.left = Math.random() * 100 + '%';
             star.style.top = Math.random() * 80 + '%';
-            star.style.animationDelay = Math.random() * 2 + 's';
-            document.body.appendChild(star);
+            star.style.animationDelay = Math.random() * 3 + 's';
+            starsContainer.appendChild(star);
         }
 
-        // --- 2. Referencias ---
-        const bigFlower = document.getElementById('big-flower-container');
-        const initialText = document.getElementById('initial-text');
-        const mainMessage = document.getElementById('main-message');
+        // --- 2. Preparar el Lienzo para la Animación ---
         const garden = document.getElementById('garden');
+        const canvas = document.createElement('canvas');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        garden.appendChild(canvas);
+        const ctx = canvas.getContext('2d');
 
-        // --- 3. Lógica del Árbol de Corazón (Recursivo) ---
-        function createTree() {
-            const canvas = document.createElement('canvas');
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            canvas.style.position = 'absolute';
-            canvas.style.bottom = '0';
-            garden.appendChild(canvas);
-            const ctx = canvas.getContext('2d');
+        // --- 3. El Motor del Árbol Animado (Recursivo) ---
+        function drawBranch(startX, startY, len, angle, branchWidth) {
+            ctx.beginPath();
+            ctx.save();
+            ctx.strokeStyle = '#4d2a00'; // Marrón tronco
+            ctx.lineWidth = branchWidth;
+            ctx.translate(startX, startY);
+            ctx.rotate(angle * Math.PI / 180);
+            ctx.moveTo(0, 0);
+            ctx.lineTo(0, -len);
+            ctx.stroke();
 
-            function drawBranch(x, y, len, angle, width) {
-                ctx.beginPath();
-                ctx.save();
-                ctx.strokeStyle = '#4d2a00';
-                ctx.lineWidth = width;
-                ctx.translate(x, y);
-                ctx.rotate(angle * Math.PI / 180);
-                ctx.moveTo(0, 0);
-                ctx.lineTo(0, -len);
-                ctx.stroke();
-
-                if (len < 10) {
-                    // Dibujar flores amarillas en las puntas (estilo video)
-                    ctx.fillStyle = '#ffd700';
-                    ctx.shadowBlur = 10;
-                    ctx.shadowColor = "#ffd700";
-                    ctx.beginPath();
-                    ctx.arc(0, -len, 6, 0, Math.PI * 2);
-                    ctx.fill();
-                    ctx.restore();
-                    return;
-                }
-
-                // Crea la forma de corazón con los ángulos
-                drawBranch(0, -len, len * 0.8, angle - 18, width * 0.7);
-                drawBranch(0, -len, len * 0.8, angle + 18, width * 0.7);
-                
+            // Si la rama es muy fina, dibuja flores amarillas detalladas
+            if (len < 10) {
+                drawFlowerDetail(0, -len);
                 ctx.restore();
+                return;
             }
 
-            // Dibujar el árbol centrado
-            drawBranch(canvas.width / 2, canvas.height, 80, 0, 12);
+            // Ramificaciones
+            drawBranch(0, -len, len * 0.75, angle - 18, branchWidth * 0.7);
+            drawBranch(0, -len, len * 0.75, angle + 18, branchWidth * 0.7);
+
+            ctx.restore();
         }
 
-        // --- 4. El Evento del Clic ---
-        bigFlower.addEventListener('click', () => {
-            // Ocultar inicio
-            bigFlower.classList.add('hide-element');
-            initialText.classList.add('hide-element');
+        // --- 4. NUEVO DISEÑO DE FLORES DETALLADAS (No más pelotas) ---
+        function drawFlowerDetail(x, y) {
+            ctx.save();
+            ctx.translate(x, y);
+
+            // Resplandor dorado Pro
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = '#ffd700';
+
+            // Dibujar pétalos amarillos ovalados
+            ctx.fillStyle = '#ffd700'; 
+            ctx.beginPath();
+            for (let i = 0; i < 5; i++) {
+                ctx.ellipse(0, -5, 5, 12, 0, 0, Math.PI * 2);
+                ctx.rotate((360 / 5) * Math.PI / 180);
+            }
+            ctx.fill();
+
+            // Centro ámbar detallado
+            ctx.fillStyle = '#3d2000'; 
+            ctx.beginPath();
+            ctx.arc(0, 0, 4, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.restore();
+        }
+
+        // --- 5. La Animación Secuencial ---
+        let currentLen = 0;
+        const targetLen = 80; // Altura final del tronco
+
+        function animateTree() {
+            // Limpiar lienzo en cada frame
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
             
-            // Mostrar mensaje final
-            mainMessage.classList.add('show-main-message');
-            
-            // Iniciar el árbol
-            createTree();
+            // Crecer tronco base
+            if (currentLen < targetLen) {
+                currentLen += 1;
+            }
+
+            // Iniciar recursividad con la longitud actual
+            // Ajustar posición base centrada
+            drawBranch(canvas.width / 2, canvas.height, currentLen, 0, 15);
+
+            // Seguir animando hasta que llegue al tamaño final
+            if (currentLen < targetLen) {
+                requestAnimationFrame(animateTree);
+            } else {
+                // Cuando el árbol termine de crecer, mostrar el mensaje final
+                setTimeout(() => {
+                    document.getElementById('main-message').classList.add('show-main-message');
+                }, 1000); 
+            }
+        }
+
+        // --- 6. Iniciar Todo ---
+        animateTree();
+
+        // Reajustar tamaño si cambia la pantalla
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            animateTree();
         });
     </script>
 </body>
 </html>
-
-        
-            
-
+         
          
