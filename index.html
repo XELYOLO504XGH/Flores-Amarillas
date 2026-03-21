@@ -69,21 +69,19 @@
         }
 
         #initial-text {
-            position: absolute;
-            bottom: calc(50% + 160px); /* Arriba de la flor grande */
-            color: #ffd700;
-            font-size: 1.2rem;
-            font-weight: bold;
-            text-aling: center;
-            width: 100%;
-            opacity: 1;
-            transition: opacity 1s;
-            z-index: 10;
-            text-shadow: 0 0 15px rgba(255, 215, 0, 0.8),
-                0 0 20px rgba(255,215,0,0.3);
-            transition: opacity 2s;
-        }
-
+    /* ... (tus otros estilos como top: calc(50% - 160px)) */
+    color: #ffd700;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+    width: 100%;
+    opacity: 1;
+    z-index: 10;
+    
+    /* BRILLO PARA ESTE TEXTO TAMBIÉN */
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.6), 0 0 20px rgba(255, 215, 0, 0.3);
+    transition: opacity 1s;
+}
         /* ESTADO FINAL: Mostrar texto principal */
         .show-main-message {
             opacity: 1 !important;
@@ -91,18 +89,29 @@
         }
 
         /* FLOR GRANDE DEL PRINCIPIO */
-        #big-flower-container {
+        .big-petal {
             position: absolute;
-            bottom: 50%;
+            background: #ffd700;
+            width: 50px;
+            height: 85px;
+            border-radius: 50%;
             left: 50%;
-            transform: translateX(-50%);
-            width: 150px;
-            height: 150px;
-            z-index: 15;
-            cursor: pointer;
-            transition: opacity 1s, transform 1s;
+            top: 50%;
+            transform-origin: center bottom;
+            
+            /* --- NUEVO BRILLO PARA LA FLOR --- */
+            /* 1. Un borde suave dorado */
+            border: 1px solid rgba(255, 215, 0, 0.4);
+            
+            /* 2. Un brillo suave interior y exterior */
+            box-shadow: 
+                0 0 15px rgba(255, 215, 0, 0.5), /* Brillo externo dorado */
+                0 0 5px rgba(255, 215, 0, 0.3) inset; /* Brillo interno sutil */
+            
+            /* 3. Drop shadow para un resplandor más profundo */
+            filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.3));
         }
-
+        
         #big-flower-top {
             position: absolute;
             width: 120px;
@@ -139,11 +148,14 @@
             left: 50%;
             transform: translate(-50%, -50%);
             z-index: 2;
-
-            box-shadow: 0 0 10px rgba(181,148,16,0.4),
+            
+            /* --- NUEVO BRILLO PARA EL CENTRO --- */
+            /* Un resplandor ámbar muy suave */
+            box-shadow: 
+                0 0 10px rgba(181, 148, 16, 0.4), 
                 0 0 3px rgba(0,0,0,0.3) inset;
         }
-
+        
         /* Ocultar elementos iniciales al hacer clic */
         .hide-initial {
             opacity: 0 !important;
