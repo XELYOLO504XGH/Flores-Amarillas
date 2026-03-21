@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Nat </title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #0b001a;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end; /* Alinear flores abajo */
+            align-items: center;
+            font-family: 'Verdana', sans-serif;
+        }
+
+        /* Cielo y Estrellas */
+        .background {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, #0b001a 0%, #1e003d 50%, #3d007a 100%);
+            z-index: 0;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: twinkle 2s infinite ease-in-out;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* Luna */
+        .moon {
+            position: absolute;
+            top: 50px;
+            width: 90px;
+            height: 90px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 60px 20px rgba(255, 255, 255, 0.2);
+            z-index: 1;
+        }
+
+        /* TEXTO INICIAL Y FINAL */
+        #main-message {
+            position: absolute;
+            top: 200px;
+            width: 90%;
+            text-align: center;
+            color: #ffd700;
+            font-size: 1.3rem;
+            font-style: italic;
+            z-index: 10;
+            opacity: 0;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+            transition: opacity 2s, transform 2s;
+        }
+
+        #initial-text {
+            position: absolute;
+            bottom: 120px; /* Arriba de la flor grande */
+            color: #ffd700;
+            font-size: 1rem;
+            opacity: 1;
+            transition: opacity 1s;
+            z-index: 10;
+        }
+
+        /* ESTADO FINAL: Mostrar texto principal */
+        .show-main-message {
+            opacity: 1 !important;
+            transform: translateY(-20px);
+        }
+
+        /* FLOR GRANDE DEL PRINCIPIO */
+        #big-flower-container {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 80px;
+            z-index: 15;
+            cursor: pointer;
+            transition: opacity 1s, transform 1s;
+        }
+
+        #big-flower-top {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            left: 10px;
+            top: 10px;
+        }
+
+        .big-petal {
+            position: absolute;
+            background: #ffd700;
+            width: 25px;
+            height: 40px;
+            border-radius: 50%;
+            left: 50%;
+            top: 50%;
+            transform-origin: center bottom;
+        }
+
+        .big-center {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background: #634000;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+        }
+
+        /* Ocultar elementos iniciales al hacer clic */
+        .hide-initial {
+            opacity: 0 !important;
+            transform: translate(-50%, 50px) scale(0) !important;
+            pointer-events: none;
+        }
+
+        /* CAMPO DE FLORES FINALES */
+        #garden {
+            position: relative;
+            width: 100%;
+            height: 300px; /* Altura del campo de flores */
+            z-index: 5;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            opacity: 0;
+            transition: opacity 3s;
+        }
+
+        .show-garden {
+            opacity: 1 !important;
+        }
+
+        /* Estructura de Flor Pequeña */
+        .flower {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transform-origin: bottom center;
+            animation: growIn 2s forwards ease-out;
+            opacity: 0;
+        }
+
+        @keyframes growIn {
+            0% { transform: scale(0.1); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .stem {
+            width: 2px;
+            background: #2d5a27;
+        }
+
+        .flower-top {
+            position: relative;
+            width: 20px;
+            height: 20px;
+            margin-bottom: -5px;
+        }
+
+        .petal {
+            position: absolute;
+            background: #ffd700;
+            width: 12px;
+            height: 18px;
+            border-radius: 50%;
+            left: 50%;
+            top: 50%;
+            transform-origin: center bottom;
+        }
+
+        .center {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #634000;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="background"></div>
+    <div class="moon"></div>
+    
+    <div id="initial-text">espero que te guste</div>
+
+    <div id="main-message">Para la niña más linda, para Nat </div>
+    
+    <div id="big-flower-container">
+        <div id="big-flower-top">
+            <div class="big-petal" style="transform: translate(-50%, -100%) rotate(0deg);"></div>
+            <div class="big-petal" style="transform: translate(-50%, -100%) rotate(72deg);"></div>
+            <div class="big-petal" style="transform: translate(-50%, -100%) rotate(144deg);"></div>
+            <div class="big-petal" style="transform: translate(-50%, -100%) rotate(216deg);"></div>
+            <div class="big-petal" style="transform: translate(-50%, -100%) rotate(288deg);"></div>
+            <div class="big-center"></div>
+        </div>
+    </div>
+
+    <div id="garden"></div>
+
+    <script>
+        // --- PARTE 1: Generar Estrellas ---
+        for (let i = 0; i < 80; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            const size = Math.random() * 2 + 1;
+            star.style.width = size + 'px';
+            star.style.height = size + 'px';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 70 + '%';
+            star.style.animationDelay = Math.random() * 2 + 's';
+            document.body.appendChild(star);
+        }
+
+        // --- PARTE 2: Lógica de Interacción ---
+        const bigFlower = document.getElementById('big-flower-container');
+        const initialText = document.getElementById('initial-text');
+        const garden = document.getElementById('garden');
+        const mainMessage = document.getElementById('main-message');
+
+        bigFlower.addEventListener('click', () => {
+            // Ocultar elementos iniciales
+            bigFlower.classList.add('hide-initial');
+            initialText.style.opacity = '0';
+            
+            // Mostrar texto principal y jardín poco a poco
+            mainMessage.classList.add('show-main-message');
+            garden.classList.add('show-garden');
+
+            // --- PARTE 3: Generar el Jardín Final ---
+            const numFlowers = 60; // ¡Muchas flores!
+            for (let i = 0; i < numFlowers; i++) {
+                const flower = document.createElement('div');
+                flower.className = 'flower';
+                
+                // Variación de altura y posición
+                const height = Math.random() * 150 + 100;
+                flower.style.left = Math.random() * 100 + '%';
+                // Retraso aleatorio para que florezcan una por una
+                flower.style.animationDelay = (Math.random() * 3) + 's';
+
+                const top = document.createElement('div');
+                top.className = 'flower-top';
+
+                for (let j = 0; j < 5; j++) {
+                    const petal = document.createElement('div');
+                    petal.className = 'petal';
+                    petal.style.transform = `translate(-50%, -100%) rotate(${j * 72}deg)`;
+                    top.appendChild(petal);
+                }
+
+                const center = document.createElement('div');
+                center.className = 'center';
+                top.appendChild(center);
+
+                const stem = document.createElement('div');
+                stem.className = 'stem';
+                stem.style.height = height + 'px';
+
+                flower.appendChild(top);
+                flower.appendChild(stem);
+                garden.appendChild(flower);
+            }
+        });
+    </script>
+</body>
+</html>
