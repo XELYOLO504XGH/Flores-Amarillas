@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ramo para Ti</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: linear-gradient(to bottom, #1a0033 0%, #4b0082 100%);
+        }
+
+        /* El Valle de Flores Moradas */
+        .valley {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 40vh;
+            background: radial-gradient(circle at 50% 100%, #800080, #4b0082);
+            border-top-left-radius: 50% 20%;
+            border-top-right-radius: 50% 20%;
+        }
+
+        .tiny-flower {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background: #9370DB;
+            border-radius: 50%;
+            box-shadow: 0 0 5px #BA55D3;
+            animation: twinkle 3s infinite ease-in-out;
+        }
+
+        /* La Luna */
+        .moon {
+            position: absolute;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 100px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 50px 10px rgba(255, 255, 255, 0.4);
+        }
+
+        /* El Ramo Amarillo */
+        .bouquet-container {
+            position: absolute;
+            bottom: 15%;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+        }
+
+        .flower {
+            position: relative;
+            transform-origin: bottom center;
+            animation: grow 2.5s forwards ease-out;
+            opacity: 0;
+        }
+
+        .petal {
+            position: absolute;
+            background: #ffd700;
+            width: 30px;
+            height: 50px;
+            border-radius: 50% 50% 50% 50% / 80% 80% 20% 20%;
+            bottom: 20px;
+            transform-origin: bottom center;
+        }
+
+        .center {
+            position: absolute;
+            bottom: 35px;
+            left: -10px;
+            width: 20px;
+            height: 20px;
+            background: #8b4513;
+            border-radius: 50%;
+            z-index: 2;
+        }
+
+        .stem {
+            width: 4px;
+            height: 100px;
+            background: #2d5a27;
+            border-radius: 2px;
+        }
+
+        /* Animaciones */
+        @keyframes grow {
+            0% { transform: scale(0) rotate(0deg); opacity: 0; }
+            100% { transform: scale(1) rotate(var(--rot)); opacity: 1; }
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        /* Posiciones de pétalos */
+        .p1 { transform: rotate(0deg); }
+        .p2 { transform: rotate(45deg); }
+        .p3 { transform: rotate(90deg); }
+        .p4 { transform: rotate(135deg); }
+        .p5 { transform: rotate(180deg); }
+        .p6 { transform: rotate(225deg); }
+        .p7 { transform: rotate(270deg); }
+        .p8 { transform: rotate(315deg); }
+
+    </style>
+</head>
+<body>
+
+    <div class="moon"></div>
+    
+    <div class="valley" id="valley"></div>
+
+    <div class="bouquet-container">
+        <div class="flower" style="--rot: -15deg; margin-right: -20px;">
+            <div class="petal p1"></div><div class="petal p2"></div><div class="petal p3"></div>
+            <div class="petal p4"></div><div class="petal p5"></div><div class="petal p6"></div>
+            <div class="petal p7"></div><div class="petal p8"></div>
+            <div class="center"></div>
+            <div class="stem"></div>
+        </div>
+        <div class="flower" style="--rot: 0deg; z-index: 5;">
+            <div class="petal p1"></div><div class="petal p2"></div><div class="petal p3"></div>
+            <div class="petal p4"></div><div class="petal p5"></div><div class="petal p6"></div>
+            <div class="petal p7"></div><div class="petal p8"></div>
+            <div class="center"></div>
+            <div class="stem" style="height: 130px;"></div>
+        </div>
+        <div class="flower" style="--rot: 15deg; margin-left: -20px;">
+            <div class="petal p1"></div><div class="petal p2"></div><div class="petal p3"></div>
+            <div class="petal p4"></div><div class="petal p5"></div><div class="petal p6"></div>
+            <div class="petal p7"></div><div class="petal p8"></div>
+            <div class="center"></div>
+            <div class="stem"></div>
+        </div>
+    </div>
+
+    <script>
+        // Generar flores moradas pequeñitas en el fondo de forma aleatoria
+        const valley = document.getElementById('valley');
+        for (let i = 0; i < 50; i++) {
+            const flower = document.createElement('div');
+            flower.className = 'tiny-flower';
+            flower.style.left = Math.random() * 100 + '%';
+            flower.style.top = Math.random() * 100 + '%';
+            flower.style.animationDelay = Math.random() * 3 + 's';
+            valley.appendChild(flower);
+        }
+    </script>
+</body>
+</html>
