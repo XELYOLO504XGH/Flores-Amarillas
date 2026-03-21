@@ -290,41 +290,52 @@
             mainMessage.classList.add('show-main-message');
             garden.classList.add('show-garden');
 
-            // --- PARTE 3: Generar el Jardín Final ---
-            const numFlowers = 60; // ¡Muchas flores!
-            for (let i = 0; i < numFlowers; i++) {
-                const flower = document.createElement('div');
-                flower.className = 'flower';
-                
-                // Variación de altura y posición
-                const height = Math.random() * 150 + 100;
-                flower.style.left = Math.random() * 100 + '%';
-                // Retraso aleatorio para que florezcan una por una
-                flower.style.animationDelay = (Math.random() * 3) + 's';
+            // --- PARTE 3: Generar el Jardín Ordenado ---
+            const gardenWidth = window.innerWidth;
+            const spacing = 45; // Espacio entre cada flor
+            const rows = 3;    // Cuántas filas de flores quieres
 
-                const top = document.createElement('div');
-                top.className = 'flower-top';
+            for (let row = 0; row < rows; row++) {
+                for (let x = spacing / 2; x < gardenWidth; x += spacing) {
+                    const flower = document.createElement('div');
+                    flower.className = 'flower';
+                    
+                    // Posición horizontal exacta en orden
+                    flower.style.left = x + 'px';
+                    
+                    // Altura: las de atrás (row 0) son más altas que las de adelante
+                    const baseHeight = 160 - (row * 30); 
+                    const height = baseHeight + (Math.random() * 20); // Un toque mínimo de variación natural
+                    
+                    // Retraso escalonado para que aparezcan en orden de izquierda a derecha
+                    const delay = (x / gardenWidth) * 2 + (row * 0.5);
+                    
+                    const top = document.createElement('div');
+                    top.className = 'flower-top';
 
-                for (let j = 0; j < 5; j++) {
-                    const petal = document.createElement('div');
-                    petal.className = 'petal';
-                    petal.style.transform = `translate(-50%, -100%) rotate(${j * 72}deg)`;
-                    top.appendChild(petal);
+                    for (let j = 0; j < 5; j++) {
+                        const petal = document.createElement('div');
+                        petal.className = 'petal';
+                        petal.style.transform = `translate(-50%, -100%) rotate(${j * 72}deg)`;
+                        top.appendChild(petal);
+                    }
+
+                    const center = document.createElement('div');
+                    center.className = 'center';
+                    top.appendChild(center);
+
+                    const stem = document.createElement('div');
+                    stem.className = 'stem';
+                    stem.style.height = height + 'px';
+
+                    // Z-index para que las filas de adelante tapen un poco a las de atrás
+                    flower.style.zIndex = rows - row;
+
+                    flower.appendChild(top);
+                    flower.appendChild(stem);
+                    garden.appendChild(flower);
                 }
-
-                const center = document.createElement('div');
-                center.className = 'center';
-                top.appendChild(center);
-
-                const stem = document.createElement('div');
-                stem.className = 'stem';
-                stem.style.height = height + 'px';
-
-                flower.appendChild(top);
-                flower.appendChild(stem);
-                garden.appendChild(flower);
             }
-        });
     </script>
 </body>
 </html>
