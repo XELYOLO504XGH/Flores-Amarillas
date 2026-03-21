@@ -1,10 +1,12 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Para Nat </title>
+    <title>Para Nat <3</title>
     <style>
+        /* 1. FONDO Y ESCENA GENERAL */
         body, html {
             margin: 0;
             padding: 0;
@@ -13,13 +15,11 @@
             overflow: hidden;
             background: #0b001a;
             display: flex;
-            flex-direction: column;
-            justify-content: flex-end; /* Alinear flores abajo */
+            justify-content: center;
             align-items: center;
             font-family: 'Verdana', sans-serif;
         }
 
-        /* Cielo y Estrellas */
         .background {
             position: absolute;
             width: 100%;
@@ -28,6 +28,7 @@
             z-index: 0;
         }
 
+        /* 2. ESTRELLAS Y LUNA */
         .star {
             position: absolute;
             background: white;
@@ -41,7 +42,6 @@
             50% { opacity: 1; transform: scale(1.2); }
         }
 
-        /* Luna */
         .moon {
             position: absolute;
             top: 50px;
@@ -49,194 +49,96 @@
             height: 90px;
             background: #fff;
             border-radius: 50%;
-            box-shadow: 0 0 60px 20px rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 60px 20px rgba(255, 255, 255, 0.3);
             z-index: 1;
         }
 
-        /* TEXTO INICIAL Y FINAL */
+        /* 3. TEXTOS CON BRILLO */
+        #initial-text {
+            position: absolute;
+            top: calc(50% - 160px);
+            color: #ffd700;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+            z-index: 10;
+            transition: opacity 1s;
+        }
+
         #main-message {
             position: absolute;
-            top: 200px;
+            top: 150px;
             width: 90%;
             text-align: center;
             color: #ffd700;
-            font-size: 1.6rem;
+            font-size: 1.5rem;
             font-style: italic;
             z-index: 10;
             opacity: 0;
-            text-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
-            transition: opacity 3s, transform 3s;
+            text-shadow: 0 0 15px #ffd700, 0 0 30px #ffcc00;
+            transition: opacity 2s, transform 2s;
+            pointer-events: none;
         }
 
-        #initial-text {
-    /* ... (tus otros estilos como top: calc(50% - 160px)) */
-    color: #ffd700;
-    font-size: 1.2rem;
-    font-weight: bold;
-    text-align: center;
-    width: 100%;
-    opacity: 1;
-    z-index: 10;
-    
-    /* BRILLO PARA ESTE TEXTO TAMBIÉN */
-    text-shadow: 0 0 10px rgba(255, 215, 0, 0.6), 0 0 20px rgba(255, 215, 0, 0.3);
-    transition: opacity 1s;
-}
-        /* ESTADO FINAL: Mostrar texto principal */
         .show-main-message {
             opacity: 1 !important;
             transform: translateY(-20px);
         }
 
-        /* FLOR GRANDE DEL PRINCIPIO */
-        .big-petal {
-            position: absolute;
-            background: #ffd700;
-            width: 50px;
-            height: 85px;
-            border-radius: 50%;
-            left: 50%;
-            top: 50%;
-            transform-origin: center bottom;
-            /* Brillo tipo neón */
-            box-shadow: 0 0 20px #ffd700, 0 0 40px #ffcc00;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-        }
-        
-        /* FLOR GRANDE DEL PRINCIPIO (CENTRADA Y CON BRILLO) */
+        /* 4. FLOR GRANDE (EL BOTÓN) */
         #big-flower-container {
             position: absolute;
-            top: 50%; /* La baja al centro vertical */
-            left: 50%; /* La mueve al centro horizontal */
-            transform: translate(-50%, -50%); /* Ajuste perfecto para que el centro sea el centro */
-            width: 180px; 
-            height: 180px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 150px;
+            height: 150px;
             z-index: 15;
             cursor: pointer;
-            transition: all 1s;
-            /* Brillo opcional para todo el conjunto */
-            filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.5));
-        }
-        
-        #big-flower-top {
-            position: absolute;
-            width: 120px;
-            height: 120px;
-            left: 15px;
-            top: 15px;
+            transition: all 0.5s ease;
         }
 
         .big-petal {
             position: absolute;
             background: #ffd700;
             width: 50px;
-            height: 85px;
+            height: 80px;
             border-radius: 50%;
             left: 50%;
             top: 50%;
             transform-origin: center bottom;
-
-            border: 1px solid rgba(255, 215, 0, 0.4);
-
-            box-shadow: 0 0 15 rgba(255,215,0,0.5),
-                0 0 5px rgba(255,215,0,0.3) inset:
-
-            filter: drop-shadow(0 0 20px rgba(255,215,0,0.3));
+            box-shadow: 0 0 20px #ffd700;
+            border: 1px solid rgba(255,255,255,0.3);
         }
 
         .big-center {
             position: absolute;
-            width: 35px;
-            height: 35px;
+            width: 30px;
+            height: 30px;
             background: #634000;
             border-radius: 50%;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             z-index: 2;
-            
-            /* --- NUEVO BRILLO PARA EL CENTRO --- */
-            /* Un resplandor ámbar muy suave */
-            box-shadow: 
-                0 0 10px rgba(181, 148, 16, 0.4), 
-                0 0 3px rgba(0,0,0,0.3) inset;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
         }
-        
-        /* Ocultar elementos iniciales al hacer clic */
-        .hide-initial {
-            opacity: 0 !important;
-            transform: translate(-50%, 50px) scale(0) !important;
+
+        /* 5. CONTENEDOR DEL JARDÍN/ÁRBOL */
+        #garden {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            bottom: 0;
+            left: 0;
+            z-index: 5;
             pointer-events: none;
         }
 
-        /* CAMPO DE FLORES FINALES */
-        #garden {
-            position: relative;
-            width: 100%;
-            height: 300px; /* Altura del campo de flores */
-            z-index: 5;
-            display: flex;
-            justify-content: center;
-            align-items: flex-end;
-            opacity: 0;
-            transition: opacity 3s;
+        .hide-element {
+            opacity: 0 !important;
+            pointer-events: none !important;
         }
-
-        .show-garden {
-            opacity: 1 !important;
-        }
-
-        /* Estructura de Flor Pequeña */
-        .flower {
-            position: absolute;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            transform-origin: bottom center;
-            animation: growIn 2s forwards ease-out;
-            opacity: 0;
-        }
-
-        @keyframes growIn {
-            0% { transform: scale(0.1); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        .stem {
-            width: 2px;
-            background: #2d5a27;
-        }
-
-        .flower-top {
-            position: relative;
-            width: 20px;
-            height: 20px;
-            margin-bottom: -5px;
-        }
-
-        .petal {
-            position: absolute;
-            background: #ffd700;
-            width: 12px;
-            height: 18px;
-            border-radius: 50%;
-            left: 50%;
-            top: 50%;
-            transform-origin: center bottom;
-        }
-
-        .center {
-            position: absolute;
-            width: 8px;
-            height: 8px;
-            background: #634000;
-            border-radius: 50%;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 2;
-        }
-
     </style>
 </head>
 <body>
@@ -245,136 +147,100 @@
     <div class="moon"></div>
     
     <div id="initial-text">espero que te guste</div>
-
-    <div id="main-message">Para la niña más linda, para Nat </div>
+    <div id="main-message">Para la niña más linda, para Nat <3</div>
     
     <div id="big-flower-container">
-        <div id="big-flower-top">
-            <div class="big-petal" style="transform: translate(-50%, -100%) rotate(0deg);"></div>
-            <div class="big-petal" style="transform: translate(-50%, -100%) rotate(72deg);"></div>
-            <div class="big-petal" style="transform: translate(-50%, -100%) rotate(144deg);"></div>
-            <div class="big-petal" style="transform: translate(-50%, -100%) rotate(216deg);"></div>
-            <div class="big-petal" style="transform: translate(-50%, -100%) rotate(288deg);"></div>
-            <div class="big-center"></div>
-        </div>
+        <div class="big-petal" style="transform: translate(-50%, -100%) rotate(0deg);"></div>
+        <div class="big-petal" style="transform: translate(-50%, -100%) rotate(72deg);"></div>
+        <div class="big-petal" style="transform: translate(-50%, -100%) rotate(144deg);"></div>
+        <div class="big-petal" style="transform: translate(-50%, -100%) rotate(216deg);"></div>
+        <div class="big-petal" style="transform: translate(-50%, -100%) rotate(288deg);"></div>
+        <div class="big-center"></div>
     </div>
 
     <div id="garden"></div>
-    
-     <script>
-        // --- 1. Generar Estrellas (¡Mantenemos tu cielo pro!) ---
-        const starsContainer = document.querySelector('body');
-        for (let i = 0; i < 70; i++) {
+
+    <script>
+        // --- 1. Generar Estrellas ---
+        for (let i = 0; i < 80; i++) {
             const star = document.createElement('div');
             star.className = 'star';
-            star.style.width = Math.random() * 3 + 'px';
-            star.style.height = star.style.width;
+            const size = Math.random() * 2 + 1;
+            star.style.width = size + 'px';
+            star.style.height = size + 'px';
             star.style.left = Math.random() * 100 + '%';
             star.style.top = Math.random() * 80 + '%';
-            star.style.animationDelay = Math.random() * 3 + 's';
-            starsContainer.appendChild(star);
+            star.style.animationDelay = Math.random() * 2 + 's';
+            document.body.appendChild(star);
         }
 
+        // --- 2. Referencias ---
+        const bigFlower = document.getElementById('big-flower-container');
+        const initialText = document.getElementById('initial-text');
+        const mainMessage = document.getElementById('main-message');
         const garden = document.getElementById('garden');
 
-        // --- 2. Preparar el Lienzo para el Árbol ---
-        const canvas = document.createElement('canvas');
-        canvas.id = 'treeCanvas';
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight * 0.7; // El árbol ocupa el 70% de la pantalla
-        canvas.style.position = 'absolute';
-        canvas.style.bottom = '0';
-        canvas.style.left = '0';
-        canvas.style.zIndex = '1'; // Detrás del texto y la luna
-        garden.appendChild(canvas);
-
-        const ctx = canvas.getContext('2d');
-
-        // --- 3. El Motor del Árbol (Recursividad - Igual que en el video) ---
-        function drawBranch(startX, startY, len, angle, branchWidth) {
-            ctx.beginPath();
-            ctx.save();
-            ctx.strokeStyle = '#634000'; // Color tronco marrón oscuro
-            ctx.lineWidth = branchWidth;
-            ctx.translate(startX, startY);
-            ctx.rotate(angle * Math.PI / 180);
-            ctx.moveTo(0, 0);
-            ctx.lineTo(0, -len);
-            ctx.stroke();
-
-            // Si la rama es lo suficientemente larga, crea dos más
-            if (len < 10) {
-                // Dibujar flor amarilla en la punta
-                drawFlower(0, -len);
-                ctx.restore();
-                return;
-            }
-
-            // Ramas secundarias
-            drawBranch(0, -len, len * 0.75, angle - 15, branchWidth * 0.7);
-            drawBranch(0, -len, len * 0.75, angle + 15, branchWidth * 0.7);
-
-            ctx.restore();
-        }
-
-        // --- 4. Dibujar una Flor Amarilla Pro (Mejorada del video) ---
-        function drawFlower(x, y) {
-            ctx.save();
-            ctx.translate(x, y);
-
-            // Pétalos Amarillos
-            ctx.fillStyle = '#ffd700'; // Dorado pro
-            ctx.beginPath();
-            for (let i = 0; i < 5; i++) {
-                ctx.ellipse(0, -5, 5, 12, 0, 0, Math.PI * 2);
-                ctx.rotate((360 / 5) * Math.PI / 180);
-            }
-            ctx.fill();
-
-            // Centro Marrón
-            ctx.fillStyle = '#3d2000'; 
-            ctx.beginPath();
-            ctx.arc(0, 0, 5, 0, Math.PI * 2);
-            ctx.fill();
-
-            // Brillo a la flor (¡Para que se vea pro!)
-            ctx.shadowColor = '#ffd700';
-            ctx.shadowBlur = 10;
-            ctx.strokeStyle = 'rgba(255, 215, 0, 0.5)';
-            ctx.lineWidth = 1;
-            ctx.stroke();
-
-            ctx.restore();
-        }
-
-        // --- 5. Lógica para que el Árbol Crezca y Florezca ---
-        function growTree() {
-            // Limpiar lienzo para cada frame
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            // Dibujar el tronco base y empezar la recursividad
-            // (Ajusta la posición y tamaño base aquí)
-            drawBranch(canvas.width / 2, canvas.height, 70, 0, 15);
-        }
-
-        // --- 6. Iniciar la Animación y Mostrar Texto ---
-        growTree();
-
-        // Mostrar tu texto "Para Nat <3" 2.5 segundos después de que el árbol empiece
-        setTimeout(() => {
-            const textBox = document.getElementById('text-box');
-            if (textBox) {
-                textBox.classList.add('text-fade-active');
-            }
-        }, 2500); 
-
-        // Reajustar tamaño si cambia la pantalla
-        window.addEventListener('resize', () => {
+        // --- 3. Lógica del Árbol de Corazón (Recursivo) ---
+        function createTree() {
+            const canvas = document.createElement('canvas');
             canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight * 0.7;
-            growTree();
+            canvas.height = window.innerHeight;
+            canvas.style.position = 'absolute';
+            canvas.style.bottom = '0';
+            garden.appendChild(canvas);
+            const ctx = canvas.getContext('2d');
+
+            function drawBranch(x, y, len, angle, width) {
+                ctx.beginPath();
+                ctx.save();
+                ctx.strokeStyle = '#4d2a00';
+                ctx.lineWidth = width;
+                ctx.translate(x, y);
+                ctx.rotate(angle * Math.PI / 180);
+                ctx.moveTo(0, 0);
+                ctx.lineTo(0, -len);
+                ctx.stroke();
+
+                if (len < 10) {
+                    // Dibujar flores amarillas en las puntas (estilo video)
+                    ctx.fillStyle = '#ffd700';
+                    ctx.shadowBlur = 10;
+                    ctx.shadowColor = "#ffd700";
+                    ctx.beginPath();
+                    ctx.arc(0, -len, 6, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.restore();
+                    return;
+                }
+
+                // Crea la forma de corazón con los ángulos
+                drawBranch(0, -len, len * 0.8, angle - 18, width * 0.7);
+                drawBranch(0, -len, len * 0.8, angle + 18, width * 0.7);
+                
+                ctx.restore();
+            }
+
+            // Dibujar el árbol centrado
+            drawBranch(canvas.width / 2, canvas.height, 80, 0, 12);
+        }
+
+        // --- 4. El Evento del Clic ---
+        bigFlower.addEventListener('click', () => {
+            // Ocultar inicio
+            bigFlower.classList.add('hide-element');
+            initialText.classList.add('hide-element');
+            
+            // Mostrar mensaje final
+            mainMessage.classList.add('show-main-message');
+            
+            // Iniciar el árbol
+            createTree();
         });
     </script>
-                        
 </body>
 </html>
+
+        
+            
+
+         
