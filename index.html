@@ -79,7 +79,8 @@
             opacity: 1;
             transition: opacity 1s;
             z-index: 10;
-            text-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.8),
+                0 0 20px rgba(255,215,0,0.3);
             transition: opacity 2s;
         }
 
@@ -113,24 +114,34 @@
         .big-petal {
             position: absolute;
             background: #ffd700;
-            width: 45px;
-            height: 80px;
+            width: 50px;
+            height: 85px;
             border-radius: 50%;
             left: 50%;
             top: 50%;
             transform-origin: center bottom;
+
+            border: 1px solid rgba(255, 215, 0, 0.4);
+
+            box-shadow: 0 0 15 rgba(255,215,0,0.5),
+                0 0 5px rgba(255,215,0,0.3) inset:
+
+            filter: drop-shadow(0 0 20px rgba(255,215,0,0.3));
         }
 
         .big-center {
             position: absolute;
-            width: 15px;
-            height: 15px;
+            width: 35px;
+            height: 35px;
             background: #634000;
             border-radius: 50%;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             z-index: 2;
+
+            box-shadow: 0 0 10px rgba(181,148,16,0.4),
+                0 0 3px rgba(0,0,0,0.3) inset;
         }
 
         /* Ocultar elementos iniciales al hacer clic */
