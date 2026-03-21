@@ -280,39 +280,43 @@
         const garden = document.getElementById('garden');
         const mainMessage = document.getElementById('main-message');
 
-        // --- 2. Acción al dar Clic ---
-        bigFlower.addEventListener('click', () => {
+        // --- 2. Acción al dar Clic (El motor de las flores) ---
+        bigFlower.addEventListener('click', function() {
             // Ocultar lo del principio
             bigFlower.classList.add('hide-initial');
             if(initialText) initialText.style.opacity = '0';
             
-            // Mostrar mensaje y jardín
+            // Mostrar mensaje y activar contenedor del jardín
             mainMessage.classList.add('show-main-message');
             garden.classList.add('show-garden');
+            garden.style.opacity = "1"; // Forzamos visibilidad
 
-            // --- 3. Generar el Jardín en Orden ---
+            // --- 3. Generar el Jardín en Orden (Solución al problema de visibilidad) ---
             const gardenWidth = window.innerWidth;
-            const spacing = 60; // Espacio entre flores
-            const rows = 3;    // Filas
+            const spacing = 60; 
+            const rows = 3;
 
             for (let row = 0; row < rows; row++) {
                 for (let x = spacing / 2; x < gardenWidth; x += spacing) {
                     const flower = document.createElement('div');
                     flower.className = 'flower';
                     
-                    // Posición en orden
+                    // Posicionamiento
                     flower.style.left = x + 'px';
                     
-                    // Altura escalonada (atrás más altas)
+                    // Alturas ordenadas
                     const baseHeight = 140 - (row * 30); 
                     const height = baseHeight + (Math.random() * 15);
                     
-                    // Aparecen de izquierda a derecha
+                    // Delay para el barrido de izquierda a derecha
                     const delay = (x / gardenWidth) * 1.5 + (row * 0.4);
                     flower.style.animationDelay = delay + 's';
+                    flower.style.opacity = "1"; // Asegura que empiece a ser visible
 
+                    // Construcción de la flor
                     const top = document.createElement('div');
                     top.className = 'flower-top';
+                    top.style.animationDelay = (delay + 0.5) + 's';
 
                     for (let j = 0; j < 5; j++) {
                         const petal = document.createElement('div');
@@ -328,62 +332,17 @@
                     const stem = document.createElement('div');
                     stem.className = 'stem';
                     stem.style.height = height + 'px';
+                    stem.classList.add('animate-stem'); // Si usas la clase de crecimiento
+                    stem.style.animationDelay = delay + 's';
 
                     flower.style.zIndex = rows - row;
 
                     flower.appendChild(top);
                     flower.appendChild(stem);
                     garden.appendChild(flower);
-
-                     // --- PARTE 3: Generar el Jardín Ordenado ---
-            const gardenWidth = window.innerWidth;
-            const spacing = 45; // Espacio entre cada flor
-            const rows = 3;    // Cuántas filas de flores quieres
-
-            for (let row = 0; row < rows; row++) {
-                for (let x = spacing / 2; x < gardenWidth; x += spacing) {
-                    const flower = document.createElement('div');
-                    flower.className = 'flower';
-                    
-                    // Posición horizontal exacta en orden
-                    flower.style.left = x + 'px';
-                    
-                    // Altura: las de atrás (row 0) son más altas que las de adelante
-                    const baseHeight = 160 - (row * 30); 
-                    const height = baseHeight + (Math.random() * 20); // Un toque mínimo de variación natural
-                    
-                    // Retraso escalonado para que aparezcan en orden de izquierda a derecha
-                    const delay = (x / gardenWidth) * 2 + (row * 0.5);
-                    
-                    const top = document.createElement('div');
-                    top.className = 'flower-top';
-
-                    for (let j = 0; j < 5; j++) {
-                        const petal = document.createElement('div');
-                        petal.className = 'petal';
-                        petal.style.transform = `translate(-50%, -100%) rotate(${j * 72}deg)`;
-                        top.appendChild(petal);
-                    }
-
-                    const center = document.createElement('div');
-                    center.className = 'center';
-                    top.appendChild(center);
-
-                    const stem = document.createElement('div');
-                    stem.className = 'stem';
-                    stem.style.height = height + 'px';
-
-                    // Z-index para que las filas de adelante tapen un poco a las de atrás
-                    flower.style.zIndex = rows - row;
-
-                    flower.appendChild(top);
-                    flower.appendChild(stem);
-                    garden.appendChild(flower);
-
-                    }
                 }
-                    });
-</script>
-    
+            }
+        });
+    </script>    
 </body>
 </html>
