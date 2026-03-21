@@ -3,158 +3,156 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Para Nat <3</title>
+    <title>Para Nat</title>
     <style>
-        body, html {
+        body {
             margin: 0;
             padding: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            background: linear-gradient(to bottom, #1a0033 0%, #4b0082 100%);
-            font-family: 'Georgia', serif;
+            background: linear-gradient(to bottom, #1a0033, #4b0082);
+            height: 100vh;
             display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
         }
 
         /* La Luna */
         .moon {
             position: absolute;
-            top: 5vh;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 80px;
+            top: 50px;
+            width: 100px;
+            height: 100px;
             background: #fff;
             border-radius: 50%;
-            box-shadow: 0 0 50px 10px rgba(255, 255, 255, 0.4);
-            z-index: 1;
+            box-shadow: 0 0 40px #fff;
         }
 
-        /* El Valle de Flores */
+        /* El Valle */
         .valley {
             position: absolute;
             bottom: 0;
             width: 100%;
-            height: 40vh;
-            background: radial-gradient(circle at 50% 100%, #800080, #4b0082);
-            border-top-left-radius: 50% 20%;
-            border-top-right-radius: 50% 20%;
-            z-index: 2;
+            height: 35vh;
+            background: #300050;
+            border-top-left-radius: 50% 15%;
+            border-top-right-radius: 50% 15%;
+            z-index: 1;
         }
 
-        /* Flores moradas del fondo */
-        .tiny-flower {
-            position: absolute;
-            width: 5px;
-            height: 5px;
-            background: #9370DB;
-            border-radius: 50%;
-            box-shadow: 0 0 5px #BA55D3;
-            animation: twinkle 3s infinite ease-in-out;
-        }
-
-        /* Ramo de Tulipanes SVG */
-        .bouquet-container {
+        /* Contenedor del Ramo */
+        .bouquet {
             position: relative;
-            margin-top: auto;
-            margin-bottom: 25vh;
-            height: 250px;
-            width: 150px;
+            z-index: 2;
             display: flex;
-            justify-content: center;
-            align-items: flex-end;
-            z-index: 3;
-            animation: growthDelay 0s linear forwards; /* Evita que se vea antes de tiempo */
+            gap: 20px;
+            transform: translateY(100px);
         }
 
-        .tulip-svg {
+        /* Estructura del Tulipán */
+        .tulip {
+            position: relative;
+            animation: grow 2s ease-out forwards;
+        }
+
+        .stem {
+            width: 6px;
+            height: 120px;
+            background: #2d5a27;
+            border-radius: 4px;
+        }
+
+        .flower-head {
             position: absolute;
-            transform-origin: bottom center;
-            opacity: 0;
-            transform: scale(0.1); /* Empieza muy pequeño */
+            top: -35px;
+            left: -12px;
+            width: 30px;
+            height: 40px;
         }
 
-        /* Animación para el ramo entero: crece desde la nada */
-        @keyframes growth {
-            0% { transform: scale(0.1); opacity: 0; }
+        .petal {
+            position: absolute;
+            width: 30px;
+            height: 45px;
+            background: #ffcc00;
+            border-radius: 50% 50% 50% 50% / 80% 80% 20% 20%;
+            transform-origin: bottom center;
+            border: 1px solid #e6b800;
+        }
+
+        /* Animaciones de los Pétalos */
+        .p-left { animation: openLeft 1.5s 1.5s forwards; }
+        .p-right { animation: openRight 1.5s 1.5s forwards; }
+        .p-center { z-index: 2; }
+
+        @keyframes grow {
+            0% { transform: scale(0); opacity: 0; }
             100% { transform: scale(1); opacity: 1; }
         }
 
-        /* Animación para que los pétalos del tulipán se abran */
-        @keyframes petalOpen {
-            0% { transform: rotate(0deg); opacity: 0; }
-            100% { transform: rotate(var(--petal-rot)) translateX(var(--petal-shift)); opacity: 1; }
+        @keyframes openLeft {
+            100% { transform: rotate(-30deg) translateX(-10px); }
         }
 
-        /* Clases para iniciar las animaciones */
-        .tulip-grow-active {
-            animation: growth 1.5s forwards ease-out;
+        @keyframes openRight {
+            100% { transform: rotate(30deg) translateX(10px); }
         }
 
-        .petal-open-active {
-            animation: petalOpen 0.8s forwards ease-out;
-        }
-
-        /* Contenedor del Cuadro de Texto */
-        #text-box {
+        /* Cuadro de Texto */
+        .message {
             position: absolute;
-            top: 20vh;
-            left: 50%;
-            transform: translateX(-50%);
-            padding: 15px 25px;
-            background: rgba(255, 255, 255, 0.15); /* Fondo semitransparente para leer bien */
-            backdrop-filter: blur(5px); /* Efecto cristal borroso */
-            border-radius: 15px;
-            color: #ffd700; /* Texto dorado */
-            font-size: 1.5em;
-            text-align: center;
-            opacity: 0; /* Empieza oculto */
-            z-index: 4;
+            top: 180px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+            padding: 15px 30px;
+            border-radius: 20px;
+            color: #ffcc00;
+            font-size: 1.8rem;
+            font-weight: bold;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            opacity: 0;
+            animation: fadeIn 2s 3s forwards;
+            z-index: 3;
+            text-shadow: 0 0 10px rgba(0,0,0,0.5);
         }
 
-        /* Animación para el cuadro de texto */
-        @keyframes textFade {
-            0% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
-            100% { opacity: 1; transform: translateX(-50%) translateY(0); }
+        @keyframes fadeIn {
+            100% { opacity: 1; transform: translateY(-20px); }
         }
 
-        .text-fade-active {
-            animation: textFade 1s forwards ease-out;
+        /* Estrellas/Flores moradas fondo */
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
         }
-
-        /* Animación de titileo para las flores moradas */
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 1; }
+        .star {
+            position: absolute;
+            background: #9370DB;
+            border-radius: 50%;
+            opacity: 0.5;
         }
-
     </style>
 </head>
 <body>
 
+    <div class="stars" id="starField"></div>
     <div class="moon"></div>
-    
-    <div id="text-box">
-        para nat <#
-    </div>
+    <div class="message">Para Nat <3</div>
 
-    <div class="valley" id="valley"></div>
-
-    <div class="bouquet-container" id="bouquet">
-        <svg class="tulip-svg" id="tulip-1" width="100" height="200" style="margin-right: -40px; margin-bottom: 20px;">
-            <g class="tulip-group">
-                <rect x="48" y="80" width="4" height="120" rx="2" fill="#2d5a27" /> <ellipse cx="50" cy="85" rx="8" ry="12" fill="#ffd700" /> <path class="petal p-left-outer petal-open-active" style="--petal-rot: -12deg; --petal-shift: -6px;" d="M 50 85 C 35 60, 25 80, 50 95" fill="#ffd700" stroke="#b59410" />
-                <path class="petal p-left-inner" d="M 50 85 C 40 70, 35 80, 50 90" fill="#f5cc00" />
-                <path class="petal p-right-inner" d="M 50 85 C 60 70, 65 80, 50 90" fill="#f5cc00" />
-                <path class="petal p-right-outer petal-open-active" style="--petal-rot: 12deg; --petal-shift: 6px;" d="M 50 85 C 65 60, 75 80, 50 95" fill="#ffd700" stroke="#b59410" />
-            </g>
-        </svg>
-
-        <svg class="tulip-svg" id="tulip-2" width="100" height="200" style="z-index: 5;">
-            <g class="tulip-group">
-                <rect x="48" y="70" width="4" height="130" rx="2" fill="#2d5a27" /> <ellipse cx="50" cy="75" rx="1
-   
-
+    <div class="bouquet">
+        <div class="tulip">
+            <div class="flower-head">
+                <div class="petal p-left"></div>
+                <div class="petal p-right"></div>
+                <div class="petal p-center"></div>
+            </div>
+            <div class="stem"></div>
+        </div>
+        <div class="tulip" style="animation-delay: 0.5s;">
+            <div class="flower-head">
+                <div class="petal p-left" style="animation-delay: 2s;"></div>
+                <div class="petal p-right" style="animation-delay: 2s;"></div>
+                <div class="petal p-center"></div>
+            </div>
+            <div class="stem" style="height: 150
