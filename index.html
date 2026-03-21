@@ -1,5 +1,4 @@
-
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -111,11 +110,10 @@
             z-index: 2;
         }
 
-        #garden {
+        canvas {
             position: absolute;
-            width: 100%;
-            height: 100%;
             bottom: 0;
+            left: 0;
             z-index: 5;
             pointer-events: none;
         }
@@ -141,7 +139,7 @@
     </div>
 
     <div id="main-message">Para la niña más linda, para Nat <3</div>
-    <div id="garden"></div>
+    <canvas id="treeCanvas"></canvas>
 
     <script>
         // Estrellas
@@ -155,8 +153,7 @@
             document.body.appendChild(star);
         }
 
-        const canvas = document.createElement('canvas');
-        document.getElementById('garden').appendChild(canvas);
+        const canvas = document.getElementById('treeCanvas');
         const ctx = canvas.getContext('2d');
 
         function resize() {
@@ -169,61 +166,58 @@
         function drawFlower(x, y) {
             ctx.save();
             ctx.translate(x, y);
-            ctx.fillStyle = '#ffd700';
-            // Pétalos definidos
+            ctx.fillStyle = '#ffd700'; // Amarillo sin brillo
             for (let i = 0; i < 5; i++) {
                 ctx.beginPath();
-                ctx.ellipse(0, -5, 3.5, 9, 0, 0, Math.PI * 2);
+                ctx.ellipse(0, -5, 3, 8, 0, 0, Math.PI * 2);
                 ctx.fill();
                 ctx.rotate((Math.PI * 2) / 5);
             }
-            // Centro de la flor
             ctx.fillStyle = '#4d2a00';
-            ctx.beginPath(); ctx.arc(0, 0, 2.5, 0, Math.PI * 2); ctx.fill();
+            ctx.beginPath(); ctx.arc(0, 0, 2, 0, Math.PI * 2); ctx.fill();
             ctx.restore();
         }
 
-        function drawTree(x, y, len, angle, width) {
-            ctx.beginPath();
-            ctx.save();
-            ctx.strokeStyle = '#4d2a00';
-            ctx.lineWidth = width;
-            ctx.translate(x, y);
-            ctx.rotate(angle * Math.PI / 180);
-            ctx.moveTo(0, 0);
-            ctx.lineTo(0, -len);
-            ctx.stroke();
-
-            if (len < 10) {
-                drawFlower(0, -len);
-                ctx.restore();
+        // Función simple de dibujo paso a paso
+        function drawTreeStep(x, y, len, angle, width) {
+            if (len < 5) {
+                drawFlower(x, y);
                 return;
             }
 
-            // Animación controlada por requestAnimationFrame para suavidad
-            requestAnimationFrame(() => {
-                drawTree(0, -len, len * 0.8, angle - 22, width * 0.7);
-                drawTree(0, -len, len * 0.8, angle + 22, width * 0.7);
-            });
+            const x2 = x + Math.sin(angle * Math.PI / 180) * len;
+            const y2 = y - Math.cos(angle * Math.PI / 180) * len;
 
-            ctx.restore();
+            ctx.beginPath();
+            ctx.strokeStyle = '#4d2a00';
+            ctx.lineWidth = width;
+            ctx.moveTo(x, y);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+
+            // Animación: Espera un poquito antes de dibujar las siguientes ramas
+            setTimeout(() => {
+                drawTreeStep(x2, y2, len * 0.8, angle - 25, width * 0.7);
+                drawTreeStep(x2, y2, len * 0.8, angle + 25, width * 0.7);
+            }, 150);
         }
 
         document.getElementById('big-flower-container').addEventListener('click', function() {
             this.classList.add('hide');
             document.getElementById('initial-text').classList.add('hide');
             
-            // Inicia el dibujo del árbol animado
-            drawTree(canvas.width / 2, canvas.height, 80, 0, 12);
+            // Inicia el dibujo desde el centro inferior
+            drawTreeStep(canvas.width / 2, canvas.height, 80, 0, 10);
 
-            // Muestra el mensaje después de que crezca un poco
+            // Mensaje final
             setTimeout(() => {
                 document.getElementById('main-message').classList.add('show-msg');
-            }, 2500);
+            }, 3500);
         });
     </script>
 </body>
 </html>
+
 
    
             
