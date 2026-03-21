@@ -98,18 +98,24 @@
             left: 50%;
             top: 50%;
             transform-origin: center bottom;
-            
-            /* --- NUEVO BRILLO PARA LA FLOR --- */
-            /* 1. Un borde suave dorado */
-            border: 1px solid rgba(255, 215, 0, 0.4);
-            
-            /* 2. Un brillo suave interior y exterior */
-            box-shadow: 
-                0 0 15px rgba(255, 215, 0, 0.5), /* Brillo externo dorado */
-                0 0 5px rgba(255, 215, 0, 0.3) inset; /* Brillo interno sutil */
-            
-            /* 3. Drop shadow para un resplandor más profundo */
-            filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.3));
+            /* Brillo tipo neón */
+            box-shadow: 0 0 20px #ffd700, 0 0 40px #ffcc00;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        
+        /* FLOR GRANDE DEL PRINCIPIO (CENTRADA Y CON BRILLO) */
+        #big-flower-container {
+            position: absolute;
+            top: 50%; /* La baja al centro vertical */
+            left: 50%; /* La mueve al centro horizontal */
+            transform: translate(-50%, -50%); /* Ajuste perfecto para que el centro sea el centro */
+            width: 180px; 
+            height: 180px;
+            z-index: 15;
+            cursor: pointer;
+            transition: all 1s;
+            /* Brillo opcional para todo el conjunto */
+            filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.5));
         }
         
         #big-flower-top {
