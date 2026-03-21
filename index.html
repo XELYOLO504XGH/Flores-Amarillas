@@ -260,9 +260,9 @@
     </div>
 
     <div id="garden"></div>
-
-    <script>
-        // --- PARTE 1: Generar Estrellas ---
+    
+<script>
+        // --- 1. Generar Estrellas ---
         for (let i = 0; i < 80; i++) {
             const star = document.createElement('div');
             star.className = 'star';
@@ -275,22 +275,67 @@
             document.body.appendChild(star);
         }
 
-        // --- PARTE 2: Lógica de Interacción ---
         const bigFlower = document.getElementById('big-flower-container');
         const initialText = document.getElementById('initial-text');
         const garden = document.getElementById('garden');
         const mainMessage = document.getElementById('main-message');
 
+        // --- 2. Acción al dar Clic ---
         bigFlower.addEventListener('click', () => {
-            // Ocultar elementos iniciales
+            // Ocultar lo del principio
             bigFlower.classList.add('hide-initial');
-            initialText.style.opacity = '0';
+            if(initialText) initialText.style.opacity = '0';
             
-            // Mostrar texto principal y jardín poco a poco
+            // Mostrar mensaje y jardín
             mainMessage.classList.add('show-main-message');
             garden.classList.add('show-garden');
 
-            // --- PARTE 3: Generar el Jardín Ordenado ---
+            // --- 3. Generar el Jardín en Orden ---
+            const gardenWidth = window.innerWidth;
+            const spacing = 60; // Espacio entre flores
+            const rows = 3;    // Filas
+
+            for (let row = 0; row < rows; row++) {
+                for (let x = spacing / 2; x < gardenWidth; x += spacing) {
+                    const flower = document.createElement('div');
+                    flower.className = 'flower';
+                    
+                    // Posición en orden
+                    flower.style.left = x + 'px';
+                    
+                    // Altura escalonada (atrás más altas)
+                    const baseHeight = 140 - (row * 30); 
+                    const height = baseHeight + (Math.random() * 15);
+                    
+                    // Aparecen de izquierda a derecha
+                    const delay = (x / gardenWidth) * 1.5 + (row * 0.4);
+                    flower.style.animationDelay = delay + 's';
+
+                    const top = document.createElement('div');
+                    top.className = 'flower-top';
+
+                    for (let j = 0; j < 5; j++) {
+                        const petal = document.createElement('div');
+                        petal.className = 'petal';
+                        petal.style.transform = `translate(-50%, -100%) rotate(${j * 72}deg)`;
+                        top.appendChild(petal);
+                    }
+
+                    const center = document.createElement('div');
+                    center.className = 'center';
+                    top.appendChild(center);
+
+                    const stem = document.createElement('div');
+                    stem.className = 'stem';
+                    stem.style.height = height + 'px';
+
+                    flower.style.zIndex = rows - row;
+
+                    flower.appendChild(top);
+                    flower.appendChild(stem);
+                    garden.appendChild(flower);
+
+                     // --- PARTE 3: Generar el Jardín Ordenado ---
             const gardenWidth = window.innerWidth;
             const spacing = 45; // Espacio entre cada flor
             const rows = 3;    // Cuántas filas de flores quieres
@@ -336,6 +381,11 @@
                     garden.appendChild(flower);
                 }
             }
-    </script>
+                }
+            );
+
+    
+</script>
+    
 </body>
 </html>
