@@ -261,88 +261,120 @@
 
     <div id="garden"></div>
     
-<script>
-        // --- 1. Generar Estrellas ---
-        for (let i = 0; i < 80; i++) {
+     <script>
+        // --- 1. Generar Estrellas (¡Mantenemos tu cielo pro!) ---
+        const starsContainer = document.querySelector('body');
+        for (let i = 0; i < 70; i++) {
             const star = document.createElement('div');
             star.className = 'star';
-            const size = Math.random() * 2 + 1;
-            star.style.width = size + 'px';
-            star.style.height = size + 'px';
+            star.style.width = Math.random() * 3 + 'px';
+            star.style.height = star.style.width;
             star.style.left = Math.random() * 100 + '%';
-            star.style.top = Math.random() * 70 + '%';
-            star.style.animationDelay = Math.random() * 2 + 's';
-            document.body.appendChild(star);
+            star.style.top = Math.random() * 80 + '%';
+            star.style.animationDelay = Math.random() * 3 + 's';
+            starsContainer.appendChild(star);
         }
 
-        const bigFlower = document.getElementById('big-flower-container');
-        const initialText = document.getElementById('initial-text');
         const garden = document.getElementById('garden');
-        const mainMessage = document.getElementById('main-message');
 
-        // --- 2. Acción al dar Clic (El motor de las flores) ---
-        bigFlower.addEventListener('click', function() {
-            // Ocultar lo del principio
-            bigFlower.classList.add('hide-initial');
-            if(initialText) initialText.style.opacity = '0';
-            
-            // Mostrar mensaje y activar contenedor del jardín
-            mainMessage.classList.add('show-main-message');
-            garden.classList.add('show-garden');
-            garden.style.opacity = "1"; // Forzamos visibilidad
+        // --- 2. Preparar el Lienzo para el Árbol ---
+        const canvas = document.createElement('canvas');
+        canvas.id = 'treeCanvas';
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight * 0.7; // El árbol ocupa el 70% de la pantalla
+        canvas.style.position = 'absolute';
+        canvas.style.bottom = '0';
+        canvas.style.left = '0';
+        canvas.style.zIndex = '1'; // Detrás del texto y la luna
+        garden.appendChild(canvas);
 
-            // --- 3. Generar el Jardín en Orden (Solución al problema de visibilidad) ---
-            const gardenWidth = window.innerWidth;
-            const spacing = 60; 
-            const rows = 3;
+        const ctx = canvas.getContext('2d');
 
-            for (let row = 0; row < rows; row++) {
-                for (let x = spacing / 2; x < gardenWidth; x += spacing) {
-                    const flower = document.createElement('div');
-                    flower.className = 'flower';
-                    
-                    // Posicionamiento
-                    flower.style.left = x + 'px';
-                    
-                    // Alturas ordenadas
-                    const baseHeight = 140 - (row * 30); 
-                    const height = baseHeight + (Math.random() * 15);
-                    
-                    // Delay para el barrido de izquierda a derecha
-                    const delay = (x / gardenWidth) * 1.5 + (row * 0.4);
-                    flower.style.animationDelay = delay + 's';
-                    flower.style.opacity = "1"; // Asegura que empiece a ser visible
+        // --- 3. El Motor del Árbol (Recursividad - Igual que en el video) ---
+        function drawBranch(startX, startY, len, angle, branchWidth) {
+            ctx.beginPath();
+            ctx.save();
+            ctx.strokeStyle = '#634000'; // Color tronco marrón oscuro
+            ctx.lineWidth = branchWidth;
+            ctx.translate(startX, startY);
+            ctx.rotate(angle * Math.PI / 180);
+            ctx.moveTo(0, 0);
+            ctx.lineTo(0, -len);
+            ctx.stroke();
 
-                    // Construcción de la flor
-                    const top = document.createElement('div');
-                    top.className = 'flower-top';
-                    top.style.animationDelay = (delay + 0.5) + 's';
-
-                    for (let j = 0; j < 5; j++) {
-                        const petal = document.createElement('div');
-                        petal.className = 'petal';
-                        petal.style.transform = `translate(-50%, -100%) rotate(${j * 72}deg)`;
-                        top.appendChild(petal);
-                    }
-
-                    const center = document.createElement('div');
-                    center.className = 'center';
-                    top.appendChild(center);
-
-                    const stem = document.createElement('div');
-                    stem.className = 'stem';
-                    stem.style.height = height + 'px';
-                    stem.classList.add('animate-stem'); // Si usas la clase de crecimiento
-                    stem.style.animationDelay = delay + 's';
-
-                    flower.style.zIndex = rows - row;
-
-                    flower.appendChild(top);
-                    flower.appendChild(stem);
-                    garden.appendChild(flower);
-                }
+            // Si la rama es lo suficientemente larga, crea dos más
+            if (len < 10) {
+                // Dibujar flor amarilla en la punta
+                drawFlower(0, -len);
+                ctx.restore();
+                return;
             }
+
+            // Ramas secundarias
+            drawBranch(0, -len, len * 0.75, angle - 15, branchWidth * 0.7);
+            drawBranch(0, -len, len * 0.75, angle + 15, branchWidth * 0.7);
+
+            ctx.restore();
+        }
+
+        // --- 4. Dibujar una Flor Amarilla Pro (Mejorada del video) ---
+        function drawFlower(x, y) {
+            ctx.save();
+            ctx.translate(x, y);
+
+            // Pétalos Amarillos
+            ctx.fillStyle = '#ffd700'; // Dorado pro
+            ctx.beginPath();
+            for (let i = 0; i < 5; i++) {
+                ctx.ellipse(0, -5, 5, 12, 0, 0, Math.PI * 2);
+                ctx.rotate((360 / 5) * Math.PI / 180);
+            }
+            ctx.fill();
+
+            // Centro Marrón
+            ctx.fillStyle = '#3d2000'; 
+            ctx.beginPath();
+            ctx.arc(0, 0, 5, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Brillo a la flor (¡Para que se vea pro!)
+            ctx.shadowColor = '#ffd700';
+            ctx.shadowBlur = 10;
+            ctx.strokeStyle = 'rgba(255, 215, 0, 0.5)';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+
+            ctx.restore();
+        }
+
+        // --- 5. Lógica para que el Árbol Crezca y Florezca ---
+        function growTree() {
+            // Limpiar lienzo para cada frame
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Dibujar el tronco base y empezar la recursividad
+            // (Ajusta la posición y tamaño base aquí)
+            drawBranch(canvas.width / 2, canvas.height, 70, 0, 15);
+        }
+
+        // --- 6. Iniciar la Animación y Mostrar Texto ---
+        growTree();
+
+        // Mostrar tu texto "Para Nat <3" 2.5 segundos después de que el árbol empiece
+        setTimeout(() => {
+            const textBox = document.getElementById('text-box');
+            if (textBox) {
+                textBox.classList.add('text-fade-active');
+            }
+        }, 2500); 
+
+        // Reajustar tamaño si cambia la pantalla
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight * 0.7;
+            growTree();
         });
-    </script>    
+    </script>
+                        
 </body>
 </html>
