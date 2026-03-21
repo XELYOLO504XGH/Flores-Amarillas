@@ -70,7 +70,7 @@
 
         #initial-text {
             position: absolute;
-            bottom: 120px; /* Arriba de la flor grande */
+            bottom: calc(50% + 90px); /* Arriba de la flor grande */
             color: #ffd700;
             font-size: 1rem;
             opacity: 1;
@@ -87,11 +87,11 @@
         /* FLOR GRANDE DEL PRINCIPIO */
         #big-flower-container {
             position: absolute;
-            bottom: 40px;
+            bottom: 50%;
             left: 50%;
             transform: translateX(-50%);
-            width: 80px;
-            height: 80px;
+            width: 150px;
+            height: 150px;
             z-index: 15;
             cursor: pointer;
             transition: opacity 1s, transform 1s;
@@ -99,17 +99,17 @@
 
         #big-flower-top {
             position: absolute;
-            width: 60px;
-            height: 60px;
-            left: 10px;
-            top: 10px;
+            width: 120px;
+            height: 120px;
+            left: 15px;
+            top: 15px;
         }
 
         .big-petal {
             position: absolute;
             background: #ffd700;
-            width: 25px;
-            height: 40px;
+            width: 45px;
+            height: 80px;
             border-radius: 50%;
             left: 50%;
             top: 50%;
