@@ -3,22 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Para Nat <3</title>
+    <title>Para Nat ❤️ </title>
     <style>
+        /* --- 1. FONDO Y ESCENA PRO (Tu cielo morado) --- */
         body, html {
             margin: 0;
             padding: 0;
             width: 100%;
             height: 100%;
             overflow: hidden;
-            background: #0b001a;
-            font-family: 'Verdana', sans-serif;
+            background: #0b001a; /* Fondo morado oscuro inicial */
             display: flex;
             justify-content: center;
             align-items: center;
+            font-family: 'Verdana', sans-serif;
+            color: #ffd700;
         }
 
-        .background {
+        .background-gradient {
             position: absolute;
             width: 100%;
             height: 100%;
@@ -26,6 +28,7 @@
             z-index: 0;
         }
 
+        /* --- 2. ESTRELLAS Y LUNA LEGENDARIA (Con tu imagen) --- */
         .star {
             position: absolute;
             background: white;
@@ -39,42 +42,52 @@
             50% { opacity: 1; transform: scale(1.2); }
         }
 
-        .moon {
+        .moon-container {
             position: absolute;
             top: 50px;
             width: 90px;
             height: 90px;
-            background: #fff;
-            border-radius: 50%;
-            box-shadow: 0 0 60px 20px rgba(255, 255, 255, 0.3);
             z-index: 1;
+            /* El brillo de fondo que te gustaba */
+            box-shadow: 0 0 60px 20px rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            overflow: hidden; /* Corta la imagen en círculo */
         }
 
+        .moon-image {
+            width: 100%;
+            height: 100%;
+            background-image: url('luna.png'); /* TU IMAGEN DE LUNA */
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* --- 3. TEXTOS CON BRILLO (Inicial y Final) --- */
         #initial-text {
             position: absolute;
             top: calc(50% - 160px);
-            color: #ffd700;
             font-size: 1.2rem;
             font-weight: bold;
             text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
             z-index: 20;
+            transition: opacity 1s;
         }
 
         #main-message {
             position: absolute;
-            top: 40%;
+            top: 40%; /* Un poco más arriba del centro */
             width: 90%;
             text-align: center;
-            color: #ffd700;
             font-size: 1.8rem;
             font-style: italic;
             z-index: 10;
             opacity: 0;
             text-shadow: 0 0 15px #ffd700;
             transition: opacity 2s;
-            pointer-events: none;
+            pointer-events: none; /* No interrumpe clics */
         }
 
+        /* --- 4. FLOR GRANDE (El botón central con brillo) --- */
         #big-flower-container {
             position: absolute;
             top: 50%;
@@ -84,140 +97,176 @@
             height: 150px;
             z-index: 25;
             cursor: pointer;
-        }
-
-        .big-petal {
-            position: absolute;
-            background: #ffd700;
-            width: 50px;
-            height: 80px;
+            /* Usamos la textura de tu flor amarilla para el botón */
+            background-image: url('flor_amarilla.png');
+            background-size: cover;
+            background-position: center;
             border-radius: 50%;
-            left: 50%;
-            top: 50%;
-            transform-origin: center bottom;
-            box-shadow: 0 0 20px #ffd700;
+            /* Brillo neón dorado al botón */
+            box-shadow: 0 0 30px #ffd700, 0 0 60px #ffd700;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
 
-        .big-center {
-            position: absolute;
-            width: 30px;
-            height: 30px;
-            background: #634000;
-            border-radius: 50%;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 2;
+        #big-flower-container:active {
+            transform: translate(-50%, -50%) scale(0.9);
+            box-shadow: 0 0 15px #ffd700;
         }
 
-        canvas {
+        /* --- 5. EL ÁRBOL Y LAS FLORES (Canvas) --- */
+        #garden {
             position: absolute;
+            width: 100%;
+            height: 100%;
             bottom: 0;
-            left: 0;
             z-index: 5;
-            pointer-events: none;
+            pointer-events: none; /* No interrumpe clics */
         }
 
+        /* --- 6. LLUVIA DE PÉTALOS ROSADOS (Sakura) --- */
+        .sakura-petal {
+            position: absolute;
+            background-image: url('flor_rosada.png'); /* TU IMAGEN DE FLOR ROSADA */
+            background-size: cover;
+            opacity: 0.8;
+            pointer-events: none;
+            z-index: 6; /* Justo encima del árbol */
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-10vh) rotate(0deg); }
+            100% { transform: translateY(105vh) rotate(360deg); }
+        }
+
+        /* --- 7. UTILIDADES --- */
         .hide { display: none !important; }
         .show-msg { opacity: 1 !important; }
+
     </style>
 </head>
 <body>
 
-    <div class="background"></div>
-    <div class="moon"></div>
+    <div class="background-gradient"></div>
+    
+    <div class="moon-container">
+        <div class="moon-image"></div>
+    </div>
     
     <div id="initial-text">espero que te guste</div>
     
-    <div id="big-flower-container">
-        <div class="big-petal" style="transform: translate(-50%, -100%) rotate(0deg);"></div>
-        <div class="big-petal" style="transform: translate(-50%, -100%) rotate(72deg);"></div>
-        <div class="big-petal" style="transform: translate(-50%, -100%) rotate(144deg);"></div>
-        <div class="big-petal" style="transform: translate(-50%, -100%) rotate(216deg);"></div>
-        <div class="big-petal" style="transform: translate(-50%, -100%) rotate(288deg);"></div>
-        <div class="big-center"></div>
-    </div>
+    <div id="big-flower-container"></div>
 
     <div id="main-message">Para la niña más linda, para Nat <3</div>
+    
     <canvas id="treeCanvas"></canvas>
 
     <script>
-        // Estrellas
+        // --- 1. Generar Estrellas Pro ---
         for (let i = 0; i < 75; i++) {
             const star = document.createElement('div');
             star.className = 'star';
             const s = Math.random() * 2 + 1;
-            star.style.width = s + 'px'; star.style.height = s + 'px';
+            star.style.width = s + 'px'; 
+            star.style.height = s + 'px';
             star.style.left = Math.random() * 100 + '%';
             star.style.top = Math.random() * 75 + '%';
             document.body.appendChild(star);
         }
 
+        // --- 2. Preparar el Canvas ---
         const canvas = document.getElementById('treeCanvas');
         const ctx = canvas.getContext('2d');
+        const garden = document.getElementById('treeCanvas'); // Reutilizamos canvas para posición
 
-        function resize() {
+        function resizeCanvas() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
         }
-        window.addEventListener('resize', resize);
-        resize();
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
 
-        function drawFlower(x, y) {
+        // --- 3. Cargar Texturas de Imágenes ---
+        const imgFlorAmarilla = new Image();
+        imgFlorAmarilla.src = 'flor_amarilla.png';
+
+        const imgFlorRosada = new Image();
+        imgFlorRosada.src = 'flor_rosada.png';
+
+        // --- 4. Dibujar Árbol y Flores (Recursivo) ---
+        // Usamos la lógica de ramas que ya te gustaba
+        function drawTree(x, y, len, angle, width, currentStep, totalSteps) {
+            if (currentStep > totalSteps) return;
+
+            ctx.beginPath();
             ctx.save();
+            ctx.strokeStyle = '#4d2a00'; // Marrón tronco
+            ctx.lineWidth = width;
             ctx.translate(x, y);
-            ctx.fillStyle = '#ffd700'; // Amarillo sin brillo
-            for (let i = 0; i < 5; i++) {
-                ctx.beginPath();
-                ctx.ellipse(0, -5, 3, 8, 0, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.rotate((Math.PI * 2) / 5);
-            }
-            ctx.fillStyle = '#4d2a00';
-            ctx.beginPath(); ctx.arc(0, 0, 2, 0, Math.PI * 2); ctx.fill();
-            ctx.restore();
-        }
+            ctx.rotate(angle * Math.PI / 180);
+            ctx.moveTo(0, 0);
+            ctx.lineTo(0, -len);
+            ctx.stroke();
 
-        // Función simple de dibujo paso a paso
-        function drawTreeStep(x, y, len, angle, width) {
-            if (len < 5) {
-                drawFlower(x, y);
+            // Lógica de Flores al final de las ramas
+            if (len < 10) {
+                // Dibujamos tu imagen de flor amarilla exactamente en la punta
+                // UsamosdrawImage para texturas
+                ctx.drawImage(imgFlorAmarilla, -10, -len - 10, 20, 20); // x, y, ancho, alto
+                ctx.restore();
                 return;
             }
 
-            const x2 = x + Math.sin(angle * Math.PI / 180) * len;
-            const y2 = y - Math.cos(angle * Math.PI / 180) * len;
-
-            ctx.beginPath();
-            ctx.strokeStyle = '#4d2a00';
-            ctx.lineWidth = width;
-            ctx.moveTo(x, y);
-            ctx.lineTo(x2, y2);
-            ctx.stroke();
-
-            // Animación: Espera un poquito antes de dibujar las siguientes ramas
-            setTimeout(() => {
-                drawTreeStep(x2, y2, len * 0.8, angle - 25, width * 0.7);
-                drawTreeStep(x2, y2, len * 0.8, angle + 25, width * 0.7);
-            }, 150);
+            // Ramificaciones
+            // Ajustamos un poco los ángulos para que se vea más frondoso como tu imagen
+            drawTree(0, -len, len * 0.82, angle - 22, width * 0.7, currentStep + 1, totalSteps);
+            drawTree(0, -len, len * 0.82, angle + 22, width * 0.7, currentStep + 1, totalSteps);
+            
+            ctx.restore();
         }
 
+        // --- 5. Lógica de Lluvia de Pétalos Rosados ---
+        function createSakuraShower() {
+            const numPetals = 40; // ¡Muchos pétalos rosados!
+            for (let i = 0; i < numPetals; i++) {
+                const petal = document.createElement('div');
+                petal.className = 'sakura-petal';
+                
+                // Variación de tamaño, posición y velocidad
+                const size = Math.random() * 8 + 6; // Entre 6px y 14px
+                petal.style.width = size + 'px';
+                petal.style.height = size + 'px';
+                petal.style.left = Math.random() * 100 + '%';
+                
+                // Velocidad de caída
+                const duration = Math.random() * 4 + 3; // Entre 3s y 7s
+                petal.style.animationDuration = duration + 's';
+                
+                // Retraso para que no caigan todos juntos
+                const delay = Math.random() * 4; 
+                petal.style.animationDelay = delay + 's';
+
+                document.body.appendChild(petal);
+            }
+        }
+
+        // --- 6. El Evento del Clic Mágico ---
         document.getElementById('big-flower-container').addEventListener('click', function() {
+            // Ocultar inicio
             this.classList.add('hide');
             document.getElementById('initial-text').classList.add('hide');
             
-            // Inicia el dibujo desde el centro inferior
-            drawTreeStep(canvas.width / 2, canvas.height, 80, 0, 10);
+            // Inicia dibujo del árbol
+            // (BaseX, BaseY, LongitudInicial, ÁnguloInicial, AnchoInicial, PasoActual, PasosTotales)
+            drawTree(canvas.width / 2, canvas.height, 75, 0, 10, 0, 8);
 
-            // Mensaje final
+            // ACTIVAR LA LLUVIA DE PÉTALOS ROSADOS
+            createSakuraShower();
+
+            // Muestra el mensaje después de que brote el árbol
             setTimeout(() => {
                 document.getElementById('main-message').classList.add('show-msg');
-            }, 3500);
+            }, 3000); // 3 segundos después
         });
     </script>
 </body>
 </html>
-
-
-   
-            
