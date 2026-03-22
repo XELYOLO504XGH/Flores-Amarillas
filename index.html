@@ -30,13 +30,14 @@
         .moon-container {
             position: absolute; top: 50px; width: 110px; height: 110px;
             z-index: 1; box-shadow: 0 0 60px 20px rgba(255, 255, 255, 0.3);
-            border-radius: 50%; overflow: hidden; left: 50%; transform: translateX(-50%);
+            border-radius: 50%; left: 50%; transform: translateX(-50%);
+            display: flex; justify-content: center; align-items: center;
         }
 
         .moon-image {
-            width: 100%; height: 100%;
-            background-image: url('luna.png');
-            background-size: cover; background-position: center;
+            width: 100%; height: 100%; border-radius: 50%;
+            background-image: url('luna.png'); /* LUNA */
+            background-size: cover;
         }
 
         #initial-text {
@@ -57,16 +58,20 @@
             position: absolute; top: 50%; left: 50%;
             transform: translate(-50%, -50%); width: 150px; height: 150px;
             z-index: 25; cursor: pointer;
-            background-image: url('flor_amarilla.png');
+            background-image: url('flor_amarilla.png'); /* FLOR AMARILLA */
             background-size: cover; border-radius: 50%;
             box-shadow: 0 0 30px #ffd700;
         }
 
-        canvas { position: absolute; top: 0; left: 0; z-index: 5; pointer-events: none; }
+        canvas { 
+            position: absolute; top: 0; left: 0; 
+            width: 100vw; height: 100vh;
+            z-index: 5; pointer-events: none; 
+        }
 
         .sakura-petal {
             position: absolute; 
-            background-image: url('flor_rosada.png');
+            background-image: url('flor_rosada.png'); /* FLOR ROSADA */
             background-size: cover; z-index: 6;
             animation: fall linear infinite;
         }
@@ -102,42 +107,45 @@
 
         const canvas = document.getElementById('treeCanvas');
         const ctx = canvas.getContext('2d');
-        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-        window.addEventListener('resize', resize); resize();
+
+        function resize() { 
+            canvas.width = window.innerWidth; 
+            canvas.height = window.innerHeight; 
+        }
+        window.addEventListener('resize', resize); 
+        resize();
 
         const imgAmarilla = new Image(); imgAmarilla.src = 'flor_amarilla.png';
         const imgRosada = new Image(); imgRosada.src = 'flor_rosada.png';
 
-        // FUNCIÓN DE DIBUJO CORREGIDA
+        // LÓGICA DE ANIMACIÓN REAL
         function drawTree(x, y, len, angle, width) {
+            // Calculamos el punto final basándonos en el ángulo
+            const x2 = x + Math.sin(angle * Math.PI / 180) * len;
+            const y2 = y - Math.cos(angle * Math.PI / 180) * len;
+
+            // Dibujamos el tronco/rama
             ctx.beginPath();
-            ctx.save();
             ctx.strokeStyle = '#4d2a00';
             ctx.lineWidth = width;
-            ctx.translate(x, y);
-            ctx.rotate(angle * Math.PI / 180);
-            ctx.moveTo(0, 0);
-            ctx.lineTo(0, -len);
+            ctx.lineCap = 'round';
+            ctx.moveTo(x, y);
+            ctx.lineTo(x2, y2);
             ctx.stroke();
 
-            // Guardamos la posición actual de la punta de la rama
-            const endX = 0;
-            const endY = -len;
-
+            // Si la rama es muy pequeña, ponemos la flor
             if (len < 10) {
-                // Dibujamos la flor JUSTO en la punta de la rama actual
-                ctx.drawImage(imgAmarilla, -12, endY - 12, 24, 24);
-                ctx.restore();
+                // Dibujamos la flor amarilla JUSTO en (x2, y2)
+                ctx.drawImage(imgAmarilla, x2 - 12, y2 - 12, 24, 24);
                 return;
             }
 
-            // Animación: las ramas salen de la punta (0, -len)
+            // Animación recursiva
             setTimeout(() => {
-                drawTree(endX, endY, len * 0.8, angle - 22, width * 0.7);
-                drawTree(endX, endY, len * 0.8, angle + 22, width * 0.7);
+                // El árbol se divide en dos ramas
+                drawTree(x2, y2, len * 0.8, angle - 25, width * 0.7);
+                drawTree(x2, y2, len * 0.8, angle + 25, width * 0.7);
             }, 100);
-
-            ctx.restore();
         }
 
         function createSakuraShower() {
@@ -145,10 +153,11 @@
                 const petal = document.createElement('div');
                 petal.className = 'sakura-petal';
                 const size = Math.random() * 12 + 8;
-                petal.style.width = size + 'px'; petal.style.height = size + 'px';
+                petal.style.width = size + 'px'; 
+                petal.style.height = size + 'px';
                 petal.style.left = Math.random() * 100 + '%';
                 petal.style.animationDuration = (Math.random() * 5 + 5) + 's';
-                petal.style.animationDelay = (Math.random() * 10) + 's';
+                petal.style.animationDelay = (Math.random() * 5) + 's';
                 document.body.appendChild(petal);
             }
         }
@@ -157,8 +166,9 @@
             this.classList.add('hide');
             document.getElementById('initial-text').classList.add('hide');
             
-            // Dibujamos el árbol desde el fondo centro
-            drawTree(canvas.width / 2, canvas.height, 85, 0, 12);
+            // Empezamos el árbol desde abajo al centro
+            // Usamos coordenadas relativas al tamaño del canvas
+            drawTree(canvas.width / 2, canvas.height, 90, 0, 14);
             
             createSakuraShower();
             
